@@ -1,4 +1,4 @@
-## 🔥 Fitur Tambahan (Pembeda)
+## Fitur
 
 1. **Tabel tambahan**
    - `SALAM.mata_kuliah`
