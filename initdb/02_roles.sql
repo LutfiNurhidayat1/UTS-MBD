@@ -1,0 +1,41 @@
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'backend_dev') THEN
+    CREATE ROLE backend_dev LOGIN PASSWORD 'backend_dev_pwd';
+  END IF;
+  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'bi_dev') THEN
+    CREATE ROLE bi_dev LOGIN PASSWORD 'bi_dev_pwd';
+  END IF;
+  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'data_engineer') THEN
+    CREATE ROLE data_engineer LOGIN PASSWORD 'data_engineer_pwd';
+  END IF;
+END$$;
+
+ALTER SCHEMA SALAM OWNER TO postgres;
+
+-- =========================================
+-- GRANT UNTUK MASING-MASING ROLE
+-- =========================================
+
+-- Backend Dev: CRUD semua tabel
+GRANT USAGE ON SCHEMA SALAM TO backend_dev;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA SALAM TO backend_dev;
+ALTER DEFAULT PRIVILEGES IN SCHEMA SALAM
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO backend_dev;
+
+-- BI Dev: hanya SELECT tabel + view
+GRANT USAGE ON SCHEMA SALAM TO bi_dev;
+GRANT SELECT ON ALL TABLES IN SCHEMA SALAM TO bi_dev;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA SALAM TO bi_dev;
+GRANT SELECT ON SALAM.vw_rekap_nilai TO bi_dev;
+ALTER DEFAULT PRIVILEGES IN SCHEMA SALAM
+  GRANT SELECT ON TABLES TO bi_dev;
+
+-- Data Engineer: full control (create, modify, drop, CRUD)
+GRANT USAGE ON SCHEMA SALAM TO data_engineer;
+GRANT CREATE ON SCHEMA SALAM TO data_engineer;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA SALAM TO data_engineer;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA SALAM TO data_engineer;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA SALAM TO data_engineer;
+ALTER DEFAULT PRIVILEGES IN SCHEMA SALAM
+  GRANT ALL PRIVILEGES ON TABLES TO data_engineer;
