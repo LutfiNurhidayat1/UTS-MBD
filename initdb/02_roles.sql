@@ -13,17 +13,13 @@ END$$;
 
 ALTER SCHEMA SALAM OWNER TO postgres;
 
--- =========================================
--- GRANT UNTUK MASING-MASING ROLE
--- =========================================
 
--- Backend Dev: CRUD semua tabel
 GRANT USAGE ON SCHEMA SALAM TO backend_dev;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA SALAM TO backend_dev;
 ALTER DEFAULT PRIVILEGES IN SCHEMA SALAM
   GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO backend_dev;
 
--- BI Dev: hanya SELECT tabel + view
+
 GRANT USAGE ON SCHEMA SALAM TO bi_dev;
 GRANT SELECT ON ALL TABLES IN SCHEMA SALAM TO bi_dev;
 GRANT SELECT ON ALL SEQUENCES IN SCHEMA SALAM TO bi_dev;
@@ -31,7 +27,7 @@ GRANT SELECT ON SALAM.vw_rekap_nilai TO bi_dev;
 ALTER DEFAULT PRIVILEGES IN SCHEMA SALAM
   GRANT SELECT ON TABLES TO bi_dev;
 
--- Data Engineer: full control (create, modify, drop, CRUD)
+
 GRANT USAGE ON SCHEMA SALAM TO data_engineer;
 GRANT CREATE ON SCHEMA SALAM TO data_engineer;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA SALAM TO data_engineer;

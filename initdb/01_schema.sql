@@ -1,12 +1,5 @@
--- =========================================
--- SCHEMA SALAM (Sistem Akademik dan Layanan Akademik Mahasiswa)
--- =========================================
-
 CREATE SCHEMA IF NOT EXISTS SALAM AUTHORIZATION postgres;
 
--- =========================================
--- TABEL MAHASISWAS
--- =========================================
 CREATE TABLE IF NOT EXISTS SALAM.mahasiswas (
   id BIGSERIAL PRIMARY KEY,
   nim CHAR(10) NOT NULL,
@@ -23,9 +16,6 @@ CREATE TABLE IF NOT EXISTS SALAM.mahasiswas (
   CONSTRAINT ck_angkatan_range CHECK (angkatan BETWEEN 2018 AND 2030)
 );
 
--- =========================================
--- FUNGSI UNTUK UPDATE KOLOM updated_at
--- =========================================
 CREATE OR REPLACE FUNCTION SALAM.touch_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -38,9 +28,7 @@ CREATE TRIGGER trg_touch_updated
 BEFORE UPDATE ON SALAM.mahasiswas
 FOR EACH ROW EXECUTE FUNCTION SALAM.touch_updated_at();
 
--- =========================================
--- TABEL MATA KULIAH
--- =========================================
+
 CREATE TABLE IF NOT EXISTS SALAM.mata_kuliah (
   id SERIAL PRIMARY KEY,
   kode CHAR(6) UNIQUE NOT NULL,
@@ -48,9 +36,7 @@ CREATE TABLE IF NOT EXISTS SALAM.mata_kuliah (
   sks INT CHECK (sks BETWEEN 1 AND 6)
 );
 
--- =========================================
--- TABEL NILAI MAHASISWA
--- =========================================
+
 CREATE TABLE IF NOT EXISTS SALAM.nilai_mahasiswa (
   id SERIAL PRIMARY KEY,
   mahasiswa_id BIGINT REFERENCES SALAM.mahasiswas(id) ON DELETE CASCADE,
@@ -67,9 +53,7 @@ CREATE TABLE IF NOT EXISTS SALAM.nilai_mahasiswa (
   ) STORED
 );
 
--- =========================================
--- VIEW REKAP NILAI
--- =========================================
+
 CREATE OR REPLACE VIEW SALAM.vw_rekap_nilai AS
 SELECT
   m.nim,
@@ -81,9 +65,7 @@ FROM SALAM.nilai_mahasiswa n
 JOIN SALAM.mahasiswas m ON n.mahasiswa_id = m.id
 JOIN SALAM.mata_kuliah mk ON n.mata_kuliah_id = mk.id;
 
--- =========================================
--- TRIGGER UNTUK UPDATE OTOMATIS IPK
--- =========================================
+
 CREATE OR REPLACE FUNCTION SALAM.update_ipk()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -110,9 +92,7 @@ CREATE TRIGGER trg_update_ipk
 AFTER INSERT OR UPDATE ON SALAM.nilai_mahasiswa
 FOR EACH ROW EXECUTE FUNCTION SALAM.update_ipk();
 
--- =========================================
--- DATA AWAL
--- =========================================
+
 INSERT INTO SALAM.mahasiswas (nim, nama, email, angkatan, ipk)
 VALUES
 ('1237050020','Lutfi Nurhidayat','lutfi@gmail.com',2023,3.60),

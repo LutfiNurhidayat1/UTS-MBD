@@ -1,5 +1,3 @@
-## 🔥 Fitur Tambahan (Pembeda)
-
 1. **Tabel tambahan**
    - `SALAM.mata_kuliah`
    - `SALAM.nilai_mahasiswa`
