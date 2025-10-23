@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+## Fitur
+
+>>>>>>> f6d884ef5e128f089d505895d8cbdb023b842417
 1. **Tabel tambahan**
    - `SALAM.mata_kuliah`
    - `SALAM.nilai_mahasiswa`
